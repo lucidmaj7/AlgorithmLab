@@ -1,20 +1,90 @@
 // MergeSort.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
-#include <iostream>
+#include <stdio.h>
+#include <memory.h>
+#include <stdlib.h>
+
+#define ARRAY_LEN 10
+#define INFINITE 9999
+
+int Arr[] = {34,23,55,1,5,76,92,21,66,99};
+
+void printArray();
+void mergeSort(int nStart, int nEnd);
+void merge(int nStart, int nCenter, int nEnd);
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	printf("Unsorted Array:\t");
+	printArray();
+	mergeSort(0, ARRAY_LEN - 1);
+	printf("Sorted Array:\t");
+	printArray();
+	return 0;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void printArray()
+{
+	for (int i : Arr)
+	{
+		printf("%d ", i);
+	}
+	printf("\n");
+}
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+void mergeSort(int nStart, int nEnd)
+{
+	if (nStart < nEnd)
+	{
+		int nCenter = (nEnd + nStart) / 2;
+		mergeSort(nStart, nCenter);
+		mergeSort(nCenter+1 , nEnd);
+		merge(nStart, nCenter, nEnd);
+	}
+
+}
+
+int* GetArray(int nStart, int nEnd, int nLen)
+{
+	int* pArr = (int*)malloc(sizeof(int) * nLen);
+	
+	int j = 0;
+	for (int i = nStart; i <= nEnd; i++)
+	{
+		pArr[j] = Arr[i];
+		j++;
+	}
+
+	return pArr;
+}
+void merge(int nStart, int nCenter, int nEnd)
+{
+	int LLen = nCenter - nStart + 1;
+	int RLen = nEnd - nCenter;
+
+	int* L = GetArray(nStart, nCenter, LLen+1);
+	int* R = GetArray(nCenter+1, nEnd, RLen+1);
+	L[LLen] = INFINITE;
+	R[RLen] = INFINITE;
+
+	int i = 0;
+	int j = 0;
+
+	for (int k = nStart; k <= nEnd; k++)
+	{
+		if (L[i] <= R[j])
+		{
+			Arr[k] = L[i];
+			i++;
+		}
+		else
+		{
+			Arr[k] = R[j];
+			j++;
+		}
+	}
+	free(L);
+	free(R);
+}
+
