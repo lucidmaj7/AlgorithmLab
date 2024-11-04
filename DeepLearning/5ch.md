@@ -32,9 +32,16 @@ https://serokell.io/blog/understanding-backpropagation
   > back propagation
 
 ## 5.1.2. 국소적 계산
+
+<img src="IMG_4615.jpg" width=500>
+
 계산 그래프의 특징은 '국소적 계산'을 전파함으로써 최종결과를 얻을 수 있다는 장점이 있음.
+
 -> 자신과 관계된 정보만으로 결과를 출력할 수 있다.
+
 --> 모듈화?가 가능해진다.
+
+
 
 ### 5.1.3. 왜 계산 그래프로 푸는가?
 
@@ -59,6 +66,14 @@ https://serokell.io/blog/understanding-backpropagation
 ### 5.2.1. 연쇄법칙
 
 합성함수 미분 = 겉미분 * 속미분
+
+$$
+f(x) = f \left( l \left( m \left( n(x) \right) \right) \right)
+$$
+
+$$
+\frac{df}{dx} = \frac{dn}{dx} \cdot \frac{dm}{dn} \cdot \frac{dl}{dm} \cdot \frac{df}{dl}
+$$
 
 ### 5.3. 역전파
 
@@ -147,9 +162,71 @@ dapple, dapple_num = mul_apple_layer.backward(dapple_price)  # (1)
 ```
 
 ## 5.5. 활성화 함수 계층 구현하기
+앞서 배운 활성화 함수들도 역전파, 순전파를 구현할 수 있다.
 
+### 5.5.1. ReLU 계층
 
+<img src="IMG_4618.jpg" width=800>
 
+0보다 큰 입력 값이었을 때 미분값 그대로 보낸다.
+```py
+class Relu:
+    def __init__(self):
+        self.mask = None
+
+    def forward(self, x):
+        self.mask = (x <= 0)
+        out = x.copy()
+        out[self.mask] = 0
+
+        return out
+
+    def backward(self, dout):
+        dout[self.mask] = 0
+        dx = dout
+
+        return dx
+
+```
+mask기능으로 Relu를 구현하고 있다.
+forward할때 mask를 기억해둔다.
+
+### 5.5.2. Sigmoid 계층
+$$
+\sigma(x) = \frac{1}{1 + e^{-x}}
+$$
+
+Sigmoid식은 다소 복잡하다. 하지만 이 역시 그래프로 표기가 가능하다.
+<img src="IMG_4620.jpeg" width=800>
+
+엄청난 식을 정리하면 다음과 같이 간단해 진다.
+
+<img src="IMG_4622.jpg" width=800>
+
+```py
+
+class Sigmoid:
+    def __init__(self):
+        self.out = None
+
+    def forward(self, x):
+        out = sigmoid(x)
+        self.out = out
+        return out
+
+    def backward(self, dout):
+        dx = dout * (1.0 - self.out) * self.out
+
+        return dx
+```
+
+`out` 변수에 저장했다가 backward때 다시 사용한다. 
+
+## 5.6. Affine/SoftMax 계층
+### 5.6.1. Affine 계층
+### 5.6.3. Softmax-with-Loss 계층
+<img src="IMG_4616.jpeg" width=800>
+<img src="IMG_4617.jpeg" width=800>
 
 
 
