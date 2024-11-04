@@ -235,6 +235,9 @@ Affine계층은 입력층으로 입력*가중치+편향 이다.
 affine계층의 유도는 수학적으로 증명할 수는 있지만 너무 어렵다고한다. 
 ~~그냥 그렇게 알고 있으라고..~~
 
+
+<img src="IMG_4623.jpg" width=300>
+
 ### 5.6.3. Softmax-with-Loss 계층
 <img src="IMG_4616.jpeg" width=800>
 <img src="IMG_4617.jpeg" width=800>
