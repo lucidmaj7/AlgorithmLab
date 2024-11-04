@@ -223,7 +223,18 @@ class Sigmoid:
 `out` 변수에 저장했다가 backward때 다시 사용한다. 
 
 ## 5.6. Affine/SoftMax 계층
+
+입력층과 출력층인 Affine, softmax 계층에 대해 알아보자.
+역시 순전파, 역전파로 표현 가능하다.
+
 ### 5.6.1. Affine 계층
+Affine계층은 입력층으로 입력*가중치+편향 이다.
+
+주의해야 할 것은 차원의 원소수를 일치 시키는 것이다.
+
+affine계층의 유도는 수학적으로 증명할 수는 있지만 너무 어렵다고한다. 
+~~그냥 그렇게 알고 있으라고..~~
+
 ### 5.6.3. Softmax-with-Loss 계층
 <img src="IMG_4616.jpeg" width=800>
 <img src="IMG_4617.jpeg" width=800>
